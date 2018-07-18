@@ -5,22 +5,47 @@ import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
 
-import { InfiniteScroll } from 'mint-ui'
+import {
+  InfiniteScroll
+} from 'mint-ui'
 Vue.use(InfiniteScroll)
 
 
 
 let app = new Vue({
-  el:'#app',
-  data:{
-    lists:null
+  el: '#app',
+  data: {
+    lists: null,
+    pageNum: 1,
+    loading: false,
+    allLoaded: false,
+    pageSize: 6
   },
-  created(){
-    axios.post(url.hotLists,{
-      pageNum:1,
-      pageSize:6
-    }).then(res=>{
-      this.lists = res.data.lists
-    })
+  created() {
+    this.getLists()
+  },
+  methods: {
+    getLists() {
+      if (this.allLoaded) return
+      this.loading = true
+      axios.post(url.hotLists, {
+        pageNum: this.pageNum,
+        pageSize: this.pageSize
+      }).then(res => {
+        let curLists = res.data.lists
+        //判断数据是否加载完毕
+        if(this.curLists.lenght<this.pageSize){
+          this.allLoaded = true
+        }
+        if (this.lists) {
+          this.lists = this.lists.concat(curLists)
+        } else {
+          //初始化
+          this.lists = curLists
+        }
+        this.loading = false
+        this.pageNum++
+      })
+    }
   }
 })
