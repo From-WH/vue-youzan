@@ -5,6 +5,8 @@ import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
 
+import Foot from 'components/Foot.vue'
+
 import {
   InfiniteScroll
 } from 'mint-ui'
@@ -47,5 +49,8 @@ let app = new Vue({
         this.pageNum++
       })
     }
+  },
+  components:{
+    Foot
   }
 })
