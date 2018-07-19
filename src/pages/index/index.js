@@ -6,6 +6,7 @@ import axios from 'axios'
 import url from 'js/api.js'
 
 import Foot from 'components/Foot.vue'
+import Swiper from 'components/Swiper.vue'
 
 import {
   InfiniteScroll
@@ -21,10 +22,12 @@ let app = new Vue({
     pageNum: 1,
     loading: false,
     allLoaded: false,
-    pageSize: 6
+    pageSize: 6,
+    bannerLists: null
   },
   created() {
     this.getLists()
+    this.getBanner()
   },
   methods: {
     getLists() {
@@ -33,11 +36,11 @@ let app = new Vue({
       axios.post(url.hotLists, {
         pageNum: this.pageNum,
         pageSize: this.pageSize
-      }).then(res => {
+      }).then((res) => {
         let curLists = res.data.lists
         //判断数据是否加载完毕
-        if(this.curLists.lenght<this.pageSize){
-          this.allLoaded = true
+        if (curLists.length < this.pageSize) {
+          this.allLoaded = false
         }
         if (this.lists) {
           this.lists = this.lists.concat(curLists)
@@ -48,9 +51,15 @@ let app = new Vue({
         this.loading = false
         this.pageNum++
       })
+    },
+    getBanner() {
+      axios.get(url.banner).then(res => {
+        this.bannerLists = res.data.lists
+      })
     }
   },
-  components:{
-    Foot
+  components: {
+    Foot,
+    Swiper
   }
 })
