@@ -1,3 +1,4 @@
+//引入文件
 let url = {
   hotLists:'/index/hotLists',
   banner:'/index/banner',
@@ -6,6 +7,7 @@ let url = {
   rank:'/category/rank',
   searchList: '/search/list'
 }
+//接口
 let host = 'http://rap2api.taobao.org/app/mock/7058'   //7058
 
 for(let key in url){
